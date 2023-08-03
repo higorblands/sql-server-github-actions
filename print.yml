@@ -1,0 +1,9 @@
+name : printEchoTest
+run-name : Setting up the print test
+on: [push]
+jobs:
+  test-output:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test Outpu
+      run: echo "Here is my print test"
