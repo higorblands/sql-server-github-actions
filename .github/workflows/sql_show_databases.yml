@@ -1,0 +1,37 @@
+name: Show Databases
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-output:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Test Outpu
+        run: echo "Show databases"
+  show_databases:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Start SQL Server container
+      run: |
+        docker run -e 'ACCEPT_EULA=Y' -e "SA_PASSWORD=${{ secrets.SQL_PASSWORD }}" -p 1433:1433 --name sql_server -d mcr.microsoft.com/mssql/server:2019-latest
+        sleep 15 # Aguarda 15 segundos para o SQL Server iniciar completamente
+
+    - name: Show Databases
+      uses: docker/exec-action@v1
+      with:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        entrypoint: /opt/mssql-tools/bin/sqlcmd
+        env:
+          SQLSERVER: ${{ secrets.SQL_SERVER_ENDPOINT }}
+          DATABASENAME: ${{ secrets.SQL_DATABASE_NAME }}
+          SQLUSER: ${{ secrets.SQL_USERNAME }}
+          SQLPASSWORD: ${{ secrets.SQL_PASSWORD }}
+        args: |
+          -S $SQLSERVER -U $SQLUSER -P $SQLPASSWORD -d $DATABASENAME -Q "SELECT name FROM sys.databases;"

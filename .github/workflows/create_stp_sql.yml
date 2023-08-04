@@ -1,0 +1,29 @@
+name: Create Database
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SQLCMD
+      run: |
+        sudo apt-get update
+        sudo apt-get install mssql-tools
+      shell: bash
+
+    - name: Create Database
+      env:
+        SQL_SERVER_ENDPOINT: ${{ secrets.SQL_SERVER_ENDPOINT }}
+        SQL_DATABASE_NAME: ${{ secrets.SQL_DATABASE_NAME }}
+        SQL_USERNAME: ${{ secrets.SQL_USERNAME }}
+        SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+      run: |
+        sqlcmd -S $SQL_SERVER_ENDPOINT -d $SQL_DATABASE_NAME -U $SQL_USERNAME -P $SQL_PASSWORD -I -b -i create_database.sql
