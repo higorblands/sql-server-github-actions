@@ -13,21 +13,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up SQLCMD
-      run: |
-        sudo apt-get update
-        sudo apt-get install mssql-tools
-      shell: bash
-
-    - name: Create Database
+    - name: Set up SQLCMD and Create Database
       env:
         SQL_SERVER_ENDPOINT: ${{ secrets.SQL_SERVER_ENDPOINT }}
         SQL_DATABASE_NAME: ${{ secrets.SQL_DATABASE_NAME }}
         SQL_USERNAME: ${{ secrets.SQL_USERNAME }}
         SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
       run: |
+        sudo apt-get update
+        sudo apt-get install mssql-tools
         sqlcmd -S $SQL_SERVER_ENDPOINT -d $SQL_DATABASE_NAME -U $SQL_USERNAME -P $SQL_PASSWORD -I -b -i create_database.sql
-      run: |
         sqlcmd -S $SQL_SERVER_ENDPOINT -d $SQL_DATABASE_NAME -U $SQL_USERNAME -P $SQL_PASSWORD -I -b -i create_table.sql
-      run: |
         sqlcmd -S $SQL_SERVER_ENDPOINT -d $SQL_DATABASE_NAME -U $SQL_USERNAME -P $SQL_PASSWORD -I -b -i create_stp.sql
