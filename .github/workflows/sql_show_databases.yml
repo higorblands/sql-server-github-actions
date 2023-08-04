@@ -6,11 +6,6 @@ on:
       - main
 
 jobs:
-  test-output:
-      runs-on: ubuntu-latest
-      steps:
-      - name: Test Outpu
-        run: echo "Show databases"
   show_databases:
     runs-on: ubuntu-latest
 
@@ -20,8 +15,8 @@ jobs:
 
     - name: Start SQL Server container
       run: |
-        docker run -e 'ACCEPT_EULA=Y' -e "SA_PASSWORD=${{ secrets.SQL_PASSWORD }}" -p 1433:1433 --name sql_server -d mcr.microsoft.com/mssql/server:2019-latest
-        sleep 15 # Aguarda 15 segundos para o SQL Server iniciar completamente
+        docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=senhadificil!@#' -p 1433:1433 --name sql_server -d mcr.microsoft.com/mssql/server:2019-latest
+        sleep 15
 
     - name: Show Databases
       uses: docker/exec-action@v1
