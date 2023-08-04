@@ -27,3 +27,7 @@ jobs:
         SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
       run: |
         sqlcmd -S $SQL_SERVER_ENDPOINT -d $SQL_DATABASE_NAME -U $SQL_USERNAME -P $SQL_PASSWORD -I -b -i create_database.sql
+      run: |
+        sqlcmd -S $SQL_SERVER_ENDPOINT -d $SQL_DATABASE_NAME -U $SQL_USERNAME -P $SQL_PASSWORD -I -b -i create_table.sql
+      run: |
+        sqlcmd -S $SQL_SERVER_ENDPOINT -d $SQL_DATABASE_NAME -U $SQL_USERNAME -P $SQL_PASSWORD -I -b -i create_stp.sql

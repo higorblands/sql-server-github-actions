@@ -1,1 +1,1 @@
-CREATE DATABASE myFirstPipeLineDb;
+CREATE DATABASE Customer;
